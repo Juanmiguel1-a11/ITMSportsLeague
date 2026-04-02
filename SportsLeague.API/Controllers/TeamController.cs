@@ -5,6 +5,7 @@ using SportsLeague.API.DTOs.Response;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Interfaces.Services;
 namespace SportsLeague.API.Controllers;
+
 [ApiController] //DataAnnotations para validar el modelo, si el modelo no es valido, se devuelve un 400 Bad Request automáticamente con los errores de validación.
 [Route("api/[controller]")]
 
@@ -12,7 +13,7 @@ public class TeamController : ControllerBase
 {
     private readonly ITeamService _teamService;
     private readonly IMapper _mapper;
- 
+
     public TeamController(
     ITeamService teamService,
     IMapper mapper)
