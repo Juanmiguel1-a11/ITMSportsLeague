@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SportsLeague.Domain.Entities;
 namespace SportsLeague.DataAccess.Context;
 public class LeagueDbContext : DbContext
@@ -19,6 +19,7 @@ public class LeagueDbContext : DbContext
     public DbSet<MatchResult> MatchResults => Set<MatchResult>();
     public DbSet<Goal> Goals => Set<Goal>();
     public DbSet<Card> Cards => Set<Card>();
+    public DbSet<MatchLineup> MatchLineups => Set<MatchLineup>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -284,6 +285,31 @@ public class LeagueDbContext : DbContext
                   .WithMany(p => p.Cards)
                   .HasForeignKey(c => c.PlayerId)
                   .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // ── MatchLineup Configuration ── 
+        modelBuilder.Entity<MatchLineup>(entity =>
+        {
+            entity.HasKey(ml => ml.Id);
+            entity.Property(ml => ml.IsStarter).IsRequired();
+            entity.Property(ml => ml.Position).IsRequired().HasMaxLength(5);
+            entity.Property(ml => ml.CreatedAt).IsRequired();
+            entity.Property(ml => ml.UpdatedAt).IsRequired(false);
+
+            // Relación con Match
+            entity.HasOne(ml => ml.Match)
+                  .WithMany()
+                  .HasForeignKey(ml => ml.MatchId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            // Relación con Player
+            entity.HasOne(ml => ml.Player)
+                  .WithMany()
+                  .HasForeignKey(ml => ml.PlayerId)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            // Índice único compuesto para evitar duplicados a nivel de base de datos
+            entity.HasIndex(ml => new { ml.MatchId, ml.PlayerId }).IsUnique();
         });
     }
 }

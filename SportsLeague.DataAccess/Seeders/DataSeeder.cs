@@ -1,4 +1,4 @@
-﻿using SportsLeague.DataAccess.Context;
+using SportsLeague.DataAccess.Context;
 using SportsLeague.Domain.Entities;
 using SportsLeague.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +46,7 @@ public static class DataSeeder
             // 1. Atlético Nacional
             new[] {
                 ("David", "Ospina", PlayerPosition.Goalkeeper, 1),
-                ("William", "Tesillo", PlayerPosition.Defender, 3),
+                ("William", "Tesillo", PlayerPosition.Defender, 16),
                 ("Edwin", "Cardona", PlayerPosition.Midfielder, 10),
                 ("Alfredo", "Morelos", PlayerPosition.Forward, 9),
             },
@@ -381,5 +381,7 @@ public static class DataSeeder
         }
 
         await context.SaveChangesAsync();
+
+
     }
 }
